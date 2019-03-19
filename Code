@@ -1,0 +1,39 @@
+#Tree based model
+
+#first let's make sure that the package is installed and library is loaded
+
+install.packages("party")
+library(party)
+
+#then we'll assign the object tree our decision tree on the mtcards data set
+tree <- ctree(mpg ~ ., data = mtcars)
+
+#Let's take a  look at our conditional inference tree object that we just made
+plot (tree)
+
+#ctree function
+#we took mpg and used ctree to calculate the most important drivers of mpg. 
+#in our plot we see weight (wt) and (displacement) 
+#more is explained on page 32 in Intro to ML in R
+
+#now let's use this model to make predictions
+#let's define our training dataset
+
+
+#let's split our dat into test and train. This is on page 23 in the book
+split_size = 0.8
+
+sample_size = floor(split_size * nrow(mtcars))
+
+set.seed(123)
+
+train_indices <- sample(seq_len(nrow(mtcars)), size = sample_size)
+
+train <-  mtcars[train_indices, ]
+test <- mtcars[-train_indices, ]
+train.tree <- ctree(mpg ~ ., data = train)
+plot(train.tree)
+
+#You'll notice that the picture is different as we only have 80% of the data 
+
+#This is cool, in 2 lines of code... Work in Progress
