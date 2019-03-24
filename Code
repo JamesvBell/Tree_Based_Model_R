@@ -31,9 +31,17 @@ train_indices <- sample(seq_len(nrow(mtcars)), size = sample_size)
 
 train <-  mtcars[train_indices, ]
 test <- mtcars[-train_indices, ]
-train.tree <- ctree(mpg ~ ., data = train)
-plot(train.tree)
+tree.train <- ctree(mpg ~ ., data = train)
+plot(tree.train)
 
-#You'll notice that the picture is different as we only have 80% of the data 
+#You'll notice that the picture for this training data is different. 
 
-#This is cool, in 2 lines of code... Work in Progress
+
+#This is cool, in 2 lines of code we do a regression and classification. 
+#predict function applies it to the test data and strores in column test.data
+test$mpg.tree <-  predict(tree.train, test)
+#doing the same and using nodes gives us a class output
+test$class <- predict(tree.train, test, type = "node")
+
+#now we put these together in a single data.frame
+data.frame(row.names(test), test$mpg, test$mpg.tree, test$class)
